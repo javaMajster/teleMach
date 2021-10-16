@@ -43,7 +43,7 @@ public class ServiceController {
     public Service getServiceById(@PathVariable(value = "id") Long serviceId) {
         logger.info(String.format("Finding service id: %s ",serviceId));
         return serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
+                .orElseThrow(() -> new ResourceNotFoundException("Service", "serviceId", serviceId));
     }
 
     @PutMapping(value = "/service/{id}",
@@ -52,7 +52,7 @@ public class ServiceController {
                                  @Valid @RequestBody Service serviceBoddy) {
 
         Service service = serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
+                .orElseThrow(() -> new ResourceNotFoundException("Service", "serviceId", serviceId));
 
 
         service.setService(serviceBoddy.getService());
@@ -68,7 +68,7 @@ public class ServiceController {
     @DeleteMapping("/service/{id}")
     public ResponseEntity<?> deleteService(@PathVariable(value = "id") Long serviceId) {
         Service service = serviceRepository.findById(serviceId)
-                .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
+                .orElseThrow(() -> new ResourceNotFoundException("Service", "serviceId", serviceId));
 
         serviceRepository.delete(service);
         logger.info(String.format("Service id:  %s deleted ", service));

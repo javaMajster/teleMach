@@ -55,6 +55,7 @@ public class AdressServiceController {
     @GetMapping(value = "/getAllByAddress")
     public List<ResponseAddressServiceDTO> getAllByAddress(){
         List<Address> addressList = addressRepository.findAll();
+        List<AddressService> addressServices = addressServiceRepository.findAll();
         List<ResponseAddressServiceDTO> responseAddressServiceDTOS = new ArrayList<>();
         for (Address address : addressList){
             AddressDTO addressDTO = new AddressDTO(
@@ -65,17 +66,23 @@ public class AdressServiceController {
                     address.getPost(),
                     address.getPostNo());
 
+
             ResponseAddressServiceDTO responseAddressServiceDTO = new ResponseAddressServiceDTO();
             responseAddressServiceDTO.setAddressDTO(addressDTO);
-            List<Service> services = serviceRepository.findAll();
+
             Set<ServiceDTO> serviceDTOS = new HashSet<>();
-            for (Service service : services){
-                ServiceDTO serviceDTO = new ServiceDTO(
-                        service.getServiceId(),
-                        service.getService(),
-                        service.getValue(),
-                        service.getComment());
-                serviceDTOS.add(serviceDTO);
+            for (AddressService addressService : addressServices){
+                if (addressService.getAddressIdFk().equals(address.getAddressId())){
+                Service servicesE = serviceRepository.findById(addressService.getServiceIdFk())
+                        .orElseThrow(() -> new ResourceNotFoundException("Service", "serviceId", addressService.getServiceIdFk()));
+                    ServiceDTO serviceDTO = new ServiceDTO(
+                            servicesE.getServiceId(),
+                            servicesE.getService(),
+                            servicesE.getValue(),
+                            servicesE.getComment());
+                    serviceDTOS.add(serviceDTO);
+                }
+
             }
             responseAddressServiceDTO.setServiceDTOS(serviceDTOS);
             responseAddressServiceDTOS.add(responseAddressServiceDTO);
@@ -103,7 +110,7 @@ public class AdressServiceController {
     public AddressService getAddressServiceById(@PathVariable(value = "id") Long addressServiceId) {
         logger.info(String.format("Finding address id: %s ",addressServiceId));
         return addressServiceRepository.findById(addressServiceId)
-                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
+                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "addressServiceId", addressServiceId));
     }
 
     @PutMapping(value = "/addressService/{id}",
@@ -112,7 +119,7 @@ public class AdressServiceController {
                                  @Valid @RequestBody AddressService addressServiceBoddy) {
 
         AddressService addressService = addressServiceRepository.findById(addressServiceId)
-                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
+                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "addressServiceId", addressServiceId));
 
 
         addressService.setServiceIdFk(addressServiceBoddy.getServiceIdFk());
@@ -127,7 +134,7 @@ public class AdressServiceController {
     @DeleteMapping("/addressService/{id}")
     public ResponseEntity<?> deleteAddressService(@PathVariable(value = "id") Long addressServiceId) {
         AddressService addressService = addressServiceRepository.findById(addressServiceId)
-                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
+                .orElseThrow(() -> new ResourceNotFoundException("AddressService", "addressServiceId", addressServiceId));
 
         addressServiceRepository.delete(addressService);
         logger.info(String.format("AddressService id:  %s deleted ", addressService));

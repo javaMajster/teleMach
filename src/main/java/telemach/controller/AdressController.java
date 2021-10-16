@@ -41,7 +41,7 @@ public class AdressController {
     public Address getAddressById(@PathVariable(value = "id") Long addressId) {
         logger.info(String.format("Finding address id: %s ",addressId));
         return addressRepository.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
     }
 
     @PutMapping("/address/{id}")
@@ -49,7 +49,7 @@ public class AdressController {
                                  @Valid @RequestBody Address addressBoddy) {
 
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
 
         
         address.setCity(addressBoddy.getCity());
@@ -67,7 +67,7 @@ public class AdressController {
     @DeleteMapping("/address/{id}")
     public ResponseEntity<?> deleteAddress(@PathVariable(value = "id") Long addressId) {
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
 
         addressRepository.delete(address);
         logger.info(String.format("Address id:  %s deleted ", address));

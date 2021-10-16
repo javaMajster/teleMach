@@ -16,13 +16,13 @@ public class AddressService implements Serializable {
     private static final long serialVersionUID = -3941957588586266795L;
     @JsonIgnore
     private Long addressServiceId;
-    private Integer addressIdFk;
-    private Integer serviceIdFk;
+    private Long addressIdFk;
+    private Long serviceIdFk;
 
     public AddressService() {
     }
 
-    public AddressService(Long addressServiceId, Integer addressIdFk, Integer serviceIdFk) {
+    public AddressService(Long addressServiceId, Long addressIdFk, Long serviceIdFk) {
         this.addressServiceId = addressServiceId;
         this.addressIdFk = addressIdFk;
         this.serviceIdFk = serviceIdFk;
@@ -40,21 +40,21 @@ public class AddressService implements Serializable {
 
 
     @JoinColumn(name = "address_id_fk",referencedColumnName ="address_id",nullable = false  )
-    public Integer getAddressIdFk() {
+    public Long getAddressIdFk() {
         return addressIdFk;
     }
 
-    public void setAddressIdFk(int addressIdFk) {
+    public void setAddressIdFk(Long addressIdFk) {
         this.addressIdFk = addressIdFk;
     }
 
 
     @JoinColumn(name = "service_id_fk",referencedColumnName ="service_id",nullable = false )
-    public Integer getServiceIdFk() {
+    public Long getServiceIdFk() {
         return serviceIdFk;
     }
 
-    public void setServiceIdFk(Integer serviceIdFk) {
+    public void setServiceIdFk(Long serviceIdFk) {
         this.serviceIdFk = serviceIdFk;
     }
 
