@@ -140,7 +140,20 @@ public class AdressServiceController {
         return addressServiceRepository.save(addressService);
     }
 
-
+    @PostMapping(value = "/addressServiceByProperty" ,
+            consumes = {"application/json", "application/xml"})
+    public ResponseAddressServiceDTO addressServiceByProperty( @RequestBody Address address) {
+        logger.info(String.format("Looking for address : %s ",address.getAddressId()));
+        Address addressByProperty = addressRepository.getAddressByProperty(
+                address.getAddressId(),
+                address.getCity(),
+                address.getPostNo(),
+                address.getPost(),
+                address.getStreet(),
+                address.getStreetNo());
+        if (addressByProperty == null ) return null;
+        return getAllByAddressId(addressByProperty.getAddressId());
+    }
 
     @GetMapping("/addressService/{id}")
     public AddressService getAddressServiceById(@PathVariable(value = "id") Long addressServiceId) {
