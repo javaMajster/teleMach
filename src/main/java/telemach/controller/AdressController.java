@@ -14,7 +14,8 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api/address" ,
+                produces={"application/json", "application/xml"})
 
 public class AdressController {
 

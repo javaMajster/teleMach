@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import telemach.dto.AddressDTO;
@@ -31,7 +30,8 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api/addressService" ,
+                produces={"application/json", "application/xml"})
 public class AdressServiceController {
 
     Logger logger = LoggerFactory.getLogger(AdressServiceController.class);
@@ -91,10 +91,9 @@ public class AdressServiceController {
 
 
     @PostMapping(value = "/addressService" ,
-            consumes = { MediaType.APPLICATION_XML_VALUE} ,
-            produces =  {MediaType.APPLICATION_XML_VALUE})
+            consumes = {"application/json", "application/xml"})
     public AddressService createProduct(@Valid @RequestBody AddressService addressService) {
-        logger.info(String.format("Saving addressService id: %s ",addressService.getAddressServicesId()));
+        logger.info(String.format("Saving addressService id: %s ",addressService.getAddressServiceId()));
         return addressServiceRepository.save(addressService);
     }
 
@@ -105,7 +104,8 @@ public class AdressServiceController {
                 .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
     }
 
-    @PutMapping("/addressService/{id}")
+    @PutMapping(value = "/addressService/{id}",
+            consumes = {"application/json", "application/xml"})
     public AddressService updateProduct(@PathVariable(value = "id") Long addressServiceId,
                                  @Valid @RequestBody AddressService addressServiceBoddy) {
 
@@ -117,7 +117,7 @@ public class AdressServiceController {
         addressService.setAddressIdFk(addressServiceBoddy.getAddressIdFk());
 
         AddressService updateAddress = addressServiceRepository.save(addressService);
-        logger.info(String.format("addressService id: %s was updated", addressService.getAddressServicesId()));
+        logger.info(String.format("addressService id: %s was updated", addressService.getAddressServiceId()));
 
         return updateAddress;
     }

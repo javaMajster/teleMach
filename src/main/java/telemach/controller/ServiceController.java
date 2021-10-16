@@ -14,7 +14,9 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(value = "/api/service" ,
+                produces={"application/json", "application/xml"})
+
 public class ServiceController {
 
     Logger logger = LoggerFactory.getLogger(ServiceController.class);
@@ -31,7 +33,8 @@ public class ServiceController {
     }
 
 
-    @PostMapping("/service")
+    @PostMapping(value = "/service" ,
+            consumes = {"application/json", "application/xml"})
     public Service createProduct(@Valid @RequestBody Service service) {
         return serviceRepository.save(service);
     }
@@ -43,7 +46,8 @@ public class ServiceController {
                 .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
     }
 
-    @PutMapping("/service/{id}")
+    @PutMapping(value = "/service/{id}",
+            consumes = {"application/json", "application/xml"})
     public Service updateProduct(@PathVariable(value = "id") Long serviceId,
                                  @Valid @RequestBody Service serviceBoddy) {
 

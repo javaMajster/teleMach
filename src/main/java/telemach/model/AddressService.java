@@ -1,5 +1,6 @@
 package telemach.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -13,28 +14,28 @@ import java.io.Serializable;
         allowGetters = true)
 public class AddressService implements Serializable {
     private static final long serialVersionUID = -3941957588586266795L;
-
-    private Long addressServicesId;
+    @JsonIgnore
+    private Long addressServiceId;
     private Integer addressIdFk;
     private Integer serviceIdFk;
 
     public AddressService() {
     }
 
-    public AddressService(Long addressServicesId, Integer addressIdFk, Integer serviceIdFk) {
-        this.addressServicesId = addressServicesId;
+    public AddressService(Long addressServiceId, Integer addressIdFk, Integer serviceIdFk) {
+        this.addressServiceId = addressServiceId;
         this.addressIdFk = addressIdFk;
         this.serviceIdFk = serviceIdFk;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getAddressServicesId() {
-        return addressServicesId;
+    public Long getAddressServiceId() {
+        return addressServiceId;
     }
 
-    public void setAddressServicesId(Long addressServicesId) {
-        this.addressServicesId = addressServicesId;
+    public void setAddressServiceId(Long addressServicesId) {
+        this.addressServiceId = addressServicesId;
     }
 
 
