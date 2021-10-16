@@ -89,7 +89,43 @@ public class AdressServiceController {
         }
         return responseAddressServiceDTOS;
     }
+  @GetMapping(value = "/getAllByAddressId/{id}")
+    public ResponseAddressServiceDTO getAllByAddressId(@PathVariable(value = "id") Long addressId){
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Address", "addressId", addressId));
 
+        List<AddressService> addressServices = addressServiceRepository.findAll();
+
+            AddressDTO addressDTO = new AddressDTO(
+                    address.getAddressId(),
+                    address.getStreetNo(),
+                    address.getStreet(),
+                    address.getCity(),
+                    address.getPost(),
+                    address.getPostNo());
+
+
+            ResponseAddressServiceDTO responseAddressServiceDTO = new ResponseAddressServiceDTO();
+            responseAddressServiceDTO.setAddressDTO(addressDTO);
+
+            Set<ServiceDTO> serviceDTOS = new HashSet<>();
+            for (AddressService addressService : addressServices){
+                if (addressService.getAddressIdFk().equals(address.getAddressId())){
+                    Service servicesE = serviceRepository.findById(addressService.getServiceIdFk())
+                            .orElseThrow(() -> new ResourceNotFoundException("Service", "serviceId", addressService.getServiceIdFk()));
+                    ServiceDTO serviceDTO = new ServiceDTO(
+                            servicesE.getServiceId(),
+                            servicesE.getService(),
+                            servicesE.getValue(),
+                            servicesE.getComment());
+                    serviceDTOS.add(serviceDTO);
+                }
+
+            }
+            responseAddressServiceDTO.setServiceDTOS(serviceDTOS);
+
+        return responseAddressServiceDTO;
+    }
     @GetMapping("/addressService")
     public List<AddressService> getAllAddreses() {
         logger.info("getting all products");
