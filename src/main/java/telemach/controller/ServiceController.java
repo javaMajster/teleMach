@@ -27,7 +27,7 @@ public class ServiceController {
     ServiceRepository serviceRepository;
 
     @GetMapping("/service")
-    public List<Service> getAllAddreses() {
+    public List<Service> getAllService() {
         logger.info("getting all products");
         return serviceRepository.findAll();
     }
@@ -35,12 +35,12 @@ public class ServiceController {
 
     @PostMapping(value = "/service" ,
             consumes = {"application/json", "application/xml"})
-    public Service createProduct(@Valid @RequestBody Service service) {
+    public Service createService(@Valid @RequestBody Service service) {
         return serviceRepository.save(service);
     }
 
     @GetMapping("/service/{id}")
-    public Service getProductById(@PathVariable(value = "id") Long serviceId) {
+    public Service getServiceById(@PathVariable(value = "id") Long serviceId) {
         logger.info(String.format("Finding service id: %s ",serviceId));
         return serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
@@ -48,7 +48,7 @@ public class ServiceController {
 
     @PutMapping(value = "/service/{id}",
             consumes = {"application/json", "application/xml"})
-    public Service updateProduct(@PathVariable(value = "id") Long serviceId,
+    public Service updateService(@PathVariable(value = "id") Long serviceId,
                                  @Valid @RequestBody Service serviceBoddy) {
 
         Service service = serviceRepository.findById(serviceId)
@@ -66,7 +66,7 @@ public class ServiceController {
     }
 
     @DeleteMapping("/service/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long serviceId) {
+    public ResponseEntity<?> deleteService(@PathVariable(value = "id") Long serviceId) {
         Service service = serviceRepository.findById(serviceId)
                 .orElseThrow(() -> new ResourceNotFoundException("Service", "id", serviceId));
 

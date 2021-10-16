@@ -33,19 +33,19 @@ public class AdressController {
     }
 
     @PostMapping("/address")
-    public Address createProduct(@Valid @RequestBody Address address) {
+    public Address creatAddress(@Valid @RequestBody Address address) {
        return addressRepository.save(address);
     }
 
     @GetMapping("/address/{id}")
-    public Address getProductById(@PathVariable(value = "id") Long addressId) {
+    public Address getAddressById(@PathVariable(value = "id") Long addressId) {
         logger.info(String.format("Finding address id: %s ",addressId));
         return addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
     }
 
     @PutMapping("/address/{id}")
-    public Address updateProduct(@PathVariable(value = "id") Long addressId,
+    public Address updateAddress(@PathVariable(value = "id") Long addressId,
                                  @Valid @RequestBody Address addressBoddy) {
 
         Address address = addressRepository.findById(addressId)
@@ -65,7 +65,7 @@ public class AdressController {
     }
 
     @DeleteMapping("/address/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long addressId) {
+    public ResponseEntity<?> deleteAddress(@PathVariable(value = "id") Long addressId) {
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ResourceNotFoundException("Address", "id", addressId));
 

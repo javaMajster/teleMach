@@ -92,13 +92,15 @@ public class AdressServiceController {
 
     @PostMapping(value = "/addressService" ,
             consumes = {"application/json", "application/xml"})
-    public AddressService createProduct(@Valid @RequestBody AddressService addressService) {
+    public AddressService createAddressService(@Valid @RequestBody AddressService addressService) {
         logger.info(String.format("Saving addressService id: %s ",addressService.getAddressServiceId()));
         return addressServiceRepository.save(addressService);
     }
 
+
+
     @GetMapping("/addressService/{id}")
-    public AddressService getProductById(@PathVariable(value = "id") Long addressServiceId) {
+    public AddressService getAddressServiceById(@PathVariable(value = "id") Long addressServiceId) {
         logger.info(String.format("Finding address id: %s ",addressServiceId));
         return addressServiceRepository.findById(addressServiceId)
                 .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
@@ -106,7 +108,7 @@ public class AdressServiceController {
 
     @PutMapping(value = "/addressService/{id}",
             consumes = {"application/json", "application/xml"})
-    public AddressService updateProduct(@PathVariable(value = "id") Long addressServiceId,
+    public AddressService updateAddressService(@PathVariable(value = "id") Long addressServiceId,
                                  @Valid @RequestBody AddressService addressServiceBoddy) {
 
         AddressService addressService = addressServiceRepository.findById(addressServiceId)
@@ -123,7 +125,7 @@ public class AdressServiceController {
     }
 
     @DeleteMapping("/addressService/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable(value = "id") Long addressServiceId) {
+    public ResponseEntity<?> deleteAddressService(@PathVariable(value = "id") Long addressServiceId) {
         AddressService addressService = addressServiceRepository.findById(addressServiceId)
                 .orElseThrow(() -> new ResourceNotFoundException("AddressService", "id", addressServiceId));
 
